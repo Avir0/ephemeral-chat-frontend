@@ -136,7 +136,9 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { io } from 'socket.io-client'
 
 // API Base URL (local dev OR production)
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000"
+const API = import.meta.env.VITE_API_BASE + "/api";
+
+// const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000"
 
 export default function App() {
   const [view, setView] = useState('home')
