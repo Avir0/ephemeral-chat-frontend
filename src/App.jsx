@@ -165,7 +165,7 @@ export default function App() {
             <button
               className="btn"
               onClick={async () => {
-                const res = await fetch(`${API_BASE}/api/rooms`, { method: 'POST' })
+                const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/rooms`, { method: 'POST' })
                 const data = await res.json()
                 setRoomId(data.roomId)
                 setLink(`${window.location.origin}/chat/${data.roomId}`)
