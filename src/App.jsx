@@ -130,15 +130,11 @@
 //   )
 // }
 
-
-
 import React, { useEffect, useMemo, useState } from 'react'
 import { io } from 'socket.io-client'
 
-// API Base URL (local dev OR production)
-const API = import.meta.env.VITE_API_BASE + "/api";
-
-// const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000"
+// ✅ Just the base URL, no /api here
+const API_BASE = import.meta.env.VITE_API_BASE 
 
 export default function App() {
   const [view, setView] = useState('home')
@@ -165,7 +161,7 @@ export default function App() {
             <button
               className="btn"
               onClick={async () => {
-                const res = await fetch(`${import.meta.env.VITE_API_BASE}/api/rooms`, { method: 'POST' })
+                const res = await fetch(`${API_BASE}/api/rooms`, { method: 'POST' })
                 const data = await res.json()
                 setRoomId(data.roomId)
                 setLink(`${window.location.origin}/chat/${data.roomId}`)
@@ -212,13 +208,14 @@ export default function App() {
 function ChatRoom({ roomId, username, onExit }) {
   const [messages, setMessages] = useState([])
   const [text, setText] = useState('')
+
+  // ✅ Use API_BASE directly for socket
   const socket = useMemo(() => io(API_BASE, { transports: ['websocket'] }), [roomId])
 
   useEffect(() => {
     // Screenshot deterrents (not foolproof)
     const onKey = (e) => {
-      const block = ['PrintScreen']
-      if (block.includes(e.code)) {
+      if (e.code === 'PrintScreen') {
         e.preventDefault()
         alert('Screenshots are discouraged on this page.')
       }
